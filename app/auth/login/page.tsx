@@ -26,6 +26,7 @@ export default function Login() {
       credentials: "include",
     });
     const data = await response.json();
+    localStorage.setItem("csrfToken", data.csrfToken);
     return data.csrfToken;
   };
   

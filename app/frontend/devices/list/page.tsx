@@ -1,5 +1,5 @@
 "use client"
-
+import { useState, useEffect } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -23,22 +23,79 @@ import {
 } from "lucide-react"
 import Link from "next/link";
 
-const data = [
-  {
-    id: "#2999",
-    organization: "Republic Services",
-    siteName: "Venetian LV",
-    unitStatus: "Ready Line",
-    description: "Default",
-    address: "None",
-    model: "None",
-    unitNumber: "None",
-  },
-  // ... more data rows
-]
 
 
-export default function DevicesList() {
+export default function DeviceList() {
+  const [devices, setDevices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const csrfToken = localStorage.getItem("csrfToken");  
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  const getCsrfToken = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/auth/csrf/`, {
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (data.csrfToken) {
+        localStorage.setItem("csrfToken", data.csrfToken);
+      }
+    } catch (error) {
+      setError("Failed to fetch CSRF token");
+    }
+  };
+
+  
+  const getAuthToken = () => {
+    return localStorage.getItem("authToken");
+  };
+
+  useEffect(() => {
+    const fetchDevices = async () => {
+      try {
+        if (!csrfToken) {
+          await getCsrfToken(); // Fetch CSRF token if not available
+        }
+        const token = getAuthToken();
+
+        // Check if the token exists
+        if (!token) {
+          setError("Authentication token is missing.");
+          return;
+        }
+        console.log(token)
+        // Send the token in the Authorization header as a Bearer token
+        const response = await fetch(`${API_URL}/api/devices/list?page=1&sort_by=id&order=asc`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken || "",
+          },
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch devices");
+        }
+
+        const data = await response.json();
+        setDevices(data.devices);
+      } catch (err) {
+        setError("Failed to load devices");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDevices();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
   return (
     <div>
     <div className="border-b px-6 py-6">
@@ -123,7 +180,7 @@ export default function DevicesList() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((row) => (
+            {devices.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>
                   <Checkbox />
