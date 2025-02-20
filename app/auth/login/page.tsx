@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -8,14 +10,71 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Login() {
+  const router = useRouter();
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  const getCsrfToken = async () => {
+    const response = await fetch(`${API_URL}/api/auth/csrf/`, {
+      credentials: "include",
+    });
+    const data = await response.json();
+    return data.csrfToken;
+  };
+  
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const csrfToken = await getCsrfToken();
+      const response = await fetch(`${API_URL}/api/login/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "X-CSRFToken": csrfToken,
+        },
+        body: new URLSearchParams({
+          username: formData.email,
+          password: formData.password,
+        }),
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        router.push("/frontend/devices/list");
+      } else {
+        console.log(response);
+        setError("Invalid email or password.");
+      }
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="md:flex md:min-h-screen bg-background md:p-6 py-6 gap-x-6">
-      {/* Left side: Sign-in form */}
       <div className="md:w-1/2 flex items-center justify-center">
-        <div className="max-w-sm px-6 py-16 md:p-0 w-full ">
-          {/* Header section with logo and title */}
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-sm px-6 py-16 md:p-0 w-full "
+        >
           <div className="space-y-6 mb-6">
-            {/* Title and description */}
             <div className="flex flex-col gap-y-3">
               <h1 className="text-2xl md:text-3xl font-bold">Sign in</h1>
               <p className="text-muted-foreground text-sm">
@@ -24,19 +83,30 @@ export default function Login() {
               </p>
             </div>
           </div>
-          {/* Sign-in form */}
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
           <div className="space-y-4 mb-6">
-            {/* Email input */}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" placeholder="Email" type="email" />
+              <Input
+                id="email"
+                placeholder="Email"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
             </div>
-            {/* Password input */}
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" placeholder="Password" type="password" />
+              <Input
+                id="password"
+                placeholder="Password"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
             </div>
-            {/* Remember me checkbox and Forgot password link */}
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Checkbox id="keep-signed-in" />
@@ -44,18 +114,12 @@ export default function Login() {
                   Keep me signed in
                 </Label>
               </div>
-              {/* <Link className="text-sm text-muted-foreground hover:text-foreground underline">
-                Forgot password?
-              </Link> */}
             </div>
           </div>
-          {/* Sign-in button and Sign-up link */}
           <div className="flex flex-col space-y-4">
-            <Button className="w-full">
-              <Link className="underline text-foreground" href="/frontend/devices/list">
-                Sign In
-              </Link>
-              </Button>
+            <Button className="w-full" type="submit" disabled={loading}>
+              {loading ? "Signing in..." : "Sign In"}
+            </Button>
             <p className="text-sm text-center text-muted-foreground">
               Don't have an account?{" "}
               <Link className="underline text-foreground" href="/auth/signup">
@@ -63,9 +127,8 @@ export default function Login() {
               </Link>
             </p>
           </div>
-        </div>
+        </form>
       </div>
-      {/* Right side: Image (hidden on mobile) */}
       <Image
         src="https://ui.shadcn.com/placeholder.svg"
         alt="Image"

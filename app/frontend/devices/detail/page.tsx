@@ -73,7 +73,6 @@ export default function Detail() {
                     IMGPCB-GEN3(SN7)
                   </p>
                 </div>
-
                 <div className="flex items-start">
                   <div className="flex items-center gap-2 w-[120px]">
                     <p className="text-sm text-neutral-950 dark:text-neutral-50">
@@ -126,25 +125,49 @@ export default function Detail() {
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-6">
               <div className="text-center">
-                <div className="h-[46px] w-[46px] bg-white rounded-full mb-1"></div>
+                <Image
+                  src="/svg/switch_off.svg"
+                  alt="Switch"
+                  width={46}
+                  height={46}
+                  className=""
+                />
                 <span className="text-xs text-neutral-100 dark:text-neutral-800">
                   Switch
                 </span>
               </div>
               <div className="text-center">
-                <div className="h-[46px] w-[46px] bg-white rounded-full mb-1"></div>
+                <Image
+                  src="/svg/stop_disengaged.svg"
+                  alt="Stop"
+                  width={46}
+                  height={46}
+                  className=""
+                />
                 <span className="text-xs text-neutral-100 dark:text-neutral-800">
                   Stop
                 </span>
               </div>
               <div className="text-center">
-                <div className="h-[46px] w-[46px] bg-white rounded-full mb-1"></div>
+                <Image
+                  src="/svg/start_on.svg"
+                  alt="Start"
+                  width={46}
+                  height={46}
+                  className=""
+                />
                 <span className="text-xs text-neutral-100 dark:text-neutral-800">
                   Start
                 </span>
               </div>
               <div className="text-center">
-                <div className="h-[46px] w-[46px] bg-white rounded-full mb-1"></div>
+                <Image
+                  src="/svg/reverse_on.svg"
+                  alt="Reverse"
+                  width={46}
+                  height={46}
+                  className=""
+                />
                 <span className="text-xs text-neutral-100 dark:text-neutral-800">
                   Reverse
                 </span>
@@ -210,13 +233,13 @@ export default function Detail() {
               <div className="relative p-4 flex flex-col items-center justify-center">
                 {/* Progress bar */}
                 <div className="w-full">
-                <Image
-                  src="/svg/container.svg"
-                  alt="Example Image"
-                  width={500}
-                  height={500}
-                  className="rounded-lg"
-                />
+                  <Image
+                    src="/svg/container.svg"
+                    alt="Container"
+                    width={500}
+                    height={500}
+                    className="rounded-lg"
+                  />
                   {/* <Progress value={75} className="h-[109px] rounded-[5.57px]" /> */}
                 </div>
 
