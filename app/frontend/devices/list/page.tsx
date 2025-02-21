@@ -24,12 +24,21 @@ import {
 import Link from "next/link";
 
 
+interface Device {
+  id: string;
+  organization: string;
+  siteName: string;
+  unitStatus: string;
+  description: string;
+  address: string;
+  model: string;
+  unitNumber: string;
+}
 
 export default function DeviceList() {
-  const [devices, setDevices] = useState([]);
+  const [devices, setDevices] = useState<Device[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const csrfToken = localStorage.getItem("csrfToken");  
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   const getCsrfToken = async () => {
@@ -46,34 +55,23 @@ export default function DeviceList() {
     }
   };
 
-  
-  const getAuthToken = () => {
-    return localStorage.getItem("authToken");
-  };
-
   useEffect(() => {
     const fetchDevices = async () => {
       try {
-        if (!csrfToken) {
-          await getCsrfToken(); // Fetch CSRF token if not available
-        }
-        const token = getAuthToken();
+        const token = localStorage.getItem("authToken");
 
-        // Check if the token exists
         if (!token) {
           setError("Authentication token is missing.");
           return;
         }
-        console.log(token)
-        // Send the token in the Authorization header as a Bearer token
+
         const response = await fetch(`${API_URL}/api/devices/list?page=1&sort_by=id&order=asc`, {
           method: "GET",
           headers: {
-            "Authorization": `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`, 
             "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken || "",
           },
-          credentials: "include",
+          credentials: "include", 
         });
 
         if (!response.ok) {

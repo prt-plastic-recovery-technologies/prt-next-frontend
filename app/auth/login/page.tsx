@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
@@ -21,48 +20,37 @@ export default function Login() {
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const getCsrfToken = async () => {
-    const response = await fetch(`${API_URL}/api/auth/csrf/`, {
-      credentials: "include",
-    });
-    const data = await response.json();
-    localStorage.setItem("csrfToken", data.csrfToken);
-    return data.csrfToken;
-  };
-  
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const csrfToken = await getCsrfToken();
+      // Make POST request to Django login view
       const response = await fetch(`${API_URL}/api/login/`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-          "X-CSRFToken": csrfToken,
+          "Content-Type": "application/json",
         },
-        body: new URLSearchParams({
+        body: JSON.stringify({
           username: formData.email,
           password: formData.password,
         }),
-        credentials: "include",
       });
 
-      if (response.ok) {
-        router.push("/frontend/devices/list");
-      } else {
-        console.log(response);
-        setError("Invalid email or password.");
+      if (!response.ok) {
+        const data = await response.json();
+        setError(data.error || "Invalid email or password.");
+        return;
       }
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An unexpected error occurred.");
-      }
+
+      const data = await response.json();
+      localStorage.setItem("authToken", data.access);  
+      localStorage.setItem("refreshToken", data.refresh); 
+
+      router.push("/frontend/devices/list");
+    } catch (err) {
+      setError("An unexpected error occurred.");
     } finally {
       setLoading(false);
     }
@@ -71,16 +59,12 @@ export default function Login() {
   return (
     <div className="md:flex md:min-h-screen bg-background md:p-6 py-6 gap-x-6">
       <div className="md:w-1/2 flex items-center justify-center">
-        <form
-          onSubmit={handleSubmit}
-          className="max-w-sm px-6 py-16 md:p-0 w-full "
-        >
+        <form onSubmit={handleSubmit} className="max-w-sm px-6 py-16 md:p-0 w-full">
           <div className="space-y-6 mb-6">
             <div className="flex flex-col gap-y-3">
               <h1 className="text-2xl md:text-3xl font-bold">Sign in</h1>
               <p className="text-muted-foreground text-sm">
-                Log in to unlock tailored content and stay connected with your
-                community.
+                Log in to unlock tailored content and stay connected with your community.
               </p>
             </div>
           </div>
@@ -107,14 +91,6 @@ export default function Login() {
                 value={formData.password}
                 onChange={handleChange}
               />
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="keep-signed-in" />
-                <Label htmlFor="keep-signed-in" className="text-sm font-medium">
-                  Keep me signed in
-                </Label>
-              </div>
             </div>
           </div>
           <div className="flex flex-col space-y-4">
