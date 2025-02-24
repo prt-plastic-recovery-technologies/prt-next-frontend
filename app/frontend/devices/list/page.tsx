@@ -26,14 +26,17 @@ import Link from "next/link";
 
 interface Device {
   id: string;
-  organization: string;
-  siteName: string;
-  unitStatus: string;
-  description: string;
+  sn: string;
+  name: string;
+  unit_status: string;
+  des: string;
   address: string;
   model: string;
-  unitNumber: string;
+  unit_num: string;
+  organization__name: string;
+  organization__logo: string;
 }
+
 
 export default function DeviceList() {
   const [devices, setDevices] = useState<Device[]>([]);
@@ -65,7 +68,7 @@ export default function DeviceList() {
           return;
         }
 
-        const response = await fetch(`${API_URL}/api/devices/list?page=1&sort_by=id&order=asc`, {
+        const response = await fetch(`${API_URL}/api/device/list?page=1&sort_by=id&order=asc`, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`, 
@@ -184,26 +187,32 @@ export default function DeviceList() {
                   <Checkbox />
                 </TableCell>
                 <TableCell className="font-medium">
-                <Link className="underline text-foreground" href="/frontend/devices/detail">
-                {row.id}
+                <Link className="underline text-foreground" href={`/frontend/devices/detail/${row.id}`}>
+                {row.sn}
               </Link>
                   </TableCell>
+                  <TableCell>
+                    <div className="flex items-center space-x-2">
+                      <Avatar>
+                      <AvatarImage
+                        src={row.organization__logo ? `${API_URL}/media/${row.organization__logo}` : "https://github.com/shadcn.png"}
+                        alt={row.organization__name || "Organization Avatar"}
+                        onError={(e) => (e.currentTarget.src = "https://github.com/shadcn.png")} 
+                      />
+
+                      </Avatar>
+                      <span>{row.organization__name || "No Organization"}</span>
+                    </div>
+                  </TableCell>
+
+                <TableCell>{row.name}</TableCell>
                 <TableCell>
-                  <div className="flex items-center space-x-2">
-                    <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />
-                    </Avatar>
-                    <span>{row.organization}</span>
-                  </div>
+                  <Badge>{row.unit_status}</Badge>
                 </TableCell>
-                <TableCell>{row.siteName}</TableCell>
-                <TableCell>
-                  <Badge>{row.unitStatus}</Badge>
-                </TableCell>
-                <TableCell>{row.description}</TableCell>
+                <TableCell>{row.des}</TableCell>
                 <TableCell>{row.address}</TableCell>
                 <TableCell>{row.model}</TableCell>
-                <TableCell>{row.unitNumber}</TableCell>
+                <TableCell>{row.unit_num}</TableCell>
               </TableRow>
             ))}
           </TableBody>

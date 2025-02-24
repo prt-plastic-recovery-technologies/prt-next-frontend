@@ -17,9 +17,47 @@ import {
   InspectionPanel,
   SquarePen,
 } from "lucide-react";
+import { useParams } from "next/navigation";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 export default function Detail() {
+  const params = useParams();
+  const id = params.id as string;
+  const [error, setError] = useState("");
+  const [detail, setDetail] = useState([]);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+  useEffect(() => {
+    if (!id) return; // Exit early if id is not available
+  
+    const getDeviceData = async () => {
+      const token = localStorage.getItem("authToken");
+  
+      if (!token) {
+        setError("Authentication token is missing.");
+        return;
+      }
+  
+      try {
+        const response = await fetch(`${API_URL}/api/device/detail/${id}`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+        const data = await response.json();
+        console.log(data)
+        setDetail(data)
+      } catch (err) {
+        setError("An error occurred while fetching device data.");
+      }
+    };
+  
+    getDeviceData();
+  }, [id, API_URL]);
   return (
     <div className="space-y-3 p-3">
       <div className="flex gap-3">
@@ -35,7 +73,7 @@ export default function Detail() {
                 </p>
               </div>
               <div className="flex gap-2">
-                <Button variant="secondary">
+                <Button variant="secondary"> 
                   <RefreshCcw className="h-4 w-4 mr-2" />
                   Sync Compactor
                 </Button>
@@ -59,7 +97,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    Republic Services
+                    {detail.organization?.name}
                   </p>
                 </div>
 
@@ -70,7 +108,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    IMGPCB-GEN3(SN7)
+                  {detail.device?.des}
                   </p>
                 </div>
                 <div className="flex items-start">
@@ -80,7 +118,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    375 W Tyranena Park Rd, Lake Mills, WI 53551
+                  {detail.device?.address}
                   </p>
                 </div>
               </div>
@@ -92,7 +130,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
-                    Venetian LV
+                  {detail.device?.name}
                   </p>
                 </div>
 
@@ -103,7 +141,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
-                    6184626
+                  {detail.device?.sn}
                   </p>
                 </div>
 
@@ -114,7 +152,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
-                    6184626
+                  {detail.device?.unit_num}
                   </p>
                 </div>
               </div>
@@ -211,7 +249,9 @@ export default function Detail() {
           <div>
             <div className="space-y-1">
               <h2 className="text-xl font-semibold">Current Status</h2>
-              <Badge variant="success">Compactor is ready to run</Badge>
+              <Badge variant="success">
+                <span dangerouslySetInnerHTML={{ __html: detail.current_status }} />
+              </Badge>
             </div>
           </div>
           <Separator />
@@ -259,21 +299,21 @@ export default function Detail() {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">Safe stop status</span>
-                  <Badge>CLEAR</Badge>
+                  <Badge>{detail.safe_stop}</Badge>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">Alert status</span>
-                  <Badge>CLEAR</Badge>
+                  <Badge>{detail.alert_status}</Badge>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">Diagnostic Status</span>
-                  <Badge>CLEAR</Badge>
+                  <Badge>{detail.system_health}</Badge>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-sm font-medium">
                     Communication Status
                   </span>
-                  <Badge variant="success">ACTIVE</Badge>
+                  <Badge variant="success">NO DATA</Badge>
                 </div>
               </div>
             </div>
