@@ -26,6 +26,10 @@ import Cycles from "@/app/frontend/devices/detail/tabcontents/Cycles"
 import SystemStatus from "@/app/frontend/devices/detail/tabcontents/SystemStatus"
 import SettingsPopover from "@/components/SettingsPopover"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import Maintenance from "../tabcontents/Maintenance";
+import Alerts from "../tabcontents/Alerts";
+import Connectivity from "../tabcontents/Connectivity";
+import Diagnostic from "../tabcontents/Diagnostic";
 
 export default function Detail() {
 
@@ -259,6 +263,10 @@ export default function Detail() {
         </TabsList>
         <SystemStatus detail={detail} />
         <Cycles/>
+        <Maintenance/>
+        <Alerts/>
+        <Connectivity/>
+        <Diagnostic/>
       </Tabs>
     </div>
   );
