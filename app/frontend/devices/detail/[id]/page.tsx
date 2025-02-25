@@ -111,7 +111,7 @@ export default function Detail() {
                 <Dialog>
                   {/* Trigger Button */}
                   <DialogTrigger asChild>
-                    <Button variant="outline">
+                    <Button variant="setting">
                       <Settings className="h-4 w-4" />
                     </Button>
                   </DialogTrigger>

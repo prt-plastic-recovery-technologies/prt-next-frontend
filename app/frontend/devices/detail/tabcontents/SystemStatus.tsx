@@ -47,22 +47,24 @@ export default function SystemStatus({ detail }: SystemStatusProps) {
 
                 <div className="relative w-full max-w-[264px]">
                   {/* Decorative background */}
-                  <div className="absolute inset-0 bg-white/50 rounded-lg dark:bg-neutral-950/50" />
+                  <div className="absolute inset-0 rounded-lg dark:bg-neutral-950/50" />
 
                   {/* Chart container */}
                   <div className="relative p-4 flex flex-col items-center justify-center">
                     {/* Progress bar */}
                     <div className="w-full">
-                      <Image
+                    <Image
                         src="/svg/container.svg"
                         alt="Container"
                         width={500}
                         height={500}
-                        className="rounded-lg"
+                        className="rounded-lg relative "
+                        style={{ zIndex: 999 }}
                       />
                       <Progress
                         value={detail.compacter_fullness}
-                        className="h-[109px] rounded-[5.57px]"
+                        className="h-[109px] rounded-[5.57px] -mt-[115px] pl-[70px] pr-[8px] pt-[10px]"
+                        style={{ zIndex: 99 }}
                       />
                     </div>
 
