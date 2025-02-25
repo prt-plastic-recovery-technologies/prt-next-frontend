@@ -115,12 +115,13 @@ export default function Login() {
         </form>
       </div>
       <Image
-        src="https://ui.shadcn.com/placeholder.svg"
+        src="/images/prtLogo.png"
         alt="Image"
-        width="1800"
-        height="1800"
-        className="w-1/2 rounded-xl object-cover md:block hidden"
+        width={1800}
+        height={1800}
+        className="w-full max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl rounded-xl object-contain md:block hidden"
       />
+
     </div>
   );
 }
