@@ -173,7 +173,7 @@ export default function DeviceList() {
                   <Checkbox />
                 </TableCell>
                 <TableCell className="font-medium">
-                <Link className="underline text-foreground" href={`/frontend/devices/detail/${row.id}`}>
+                <Link className="text-foreground" href={`/frontend/devices/detail/${row.id}`}>
                 {row.sn}
               </Link>
                   </TableCell>
@@ -187,18 +187,18 @@ export default function DeviceList() {
                       />
 
                       </Avatar>
-                      <span>{row.organization__name || "No Organization"}</span>
+                      <span>{row.organization__name || "----------"}</span>
                     </div>
                   </TableCell>
 
-                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.name !== 'undefined' ? row.name : '----------'}</TableCell>
                 <TableCell>
-                  <Badge>{row.unit_status}</Badge>
+                  <Badge>{row.unit_status || '----------'}</Badge>
                 </TableCell>
-                <TableCell>{row.des}</TableCell>
-                <TableCell>{row.address}</TableCell>
-                <TableCell>{row.model}</TableCell>
-                <TableCell>{row.unit_num}</TableCell>
+                <TableCell>{row.des !== 'undefined' && row.des !== "default" ? row.des : "----------"}</TableCell>
+                <TableCell>{row.address || '----------'}</TableCell>
+                <TableCell>{row.model || '----------'}</TableCell>
+                <TableCell>{row.unit_num || '----------'}</TableCell>
               </TableRow>
             ))}
           </TableBody>
