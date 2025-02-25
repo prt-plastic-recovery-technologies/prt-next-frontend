@@ -5,7 +5,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function SignUp() {
   return (
@@ -25,7 +24,7 @@ export default function SignUp() {
                 Create an account
               </h1>
               <p className="text-muted-foreground text-sm">
-                Let's get started. Fill in the details below to create your
+                Let&apos;s get started. Fill in the details below to create your
                 account.
               </p>
             </div>

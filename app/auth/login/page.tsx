@@ -45,12 +45,16 @@ export default function Login() {
       }
 
       const data = await response.json();
-      localStorage.setItem("authToken", data.access);  
-      localStorage.setItem("refreshToken", data.refresh); 
+      localStorage.setItem("authToken", data.access);
+      localStorage.setItem("refreshToken", data.refresh);
 
       router.push("/frontend/devices/list");
-    } catch (err) {
-      setError("An unexpected error occurred.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "An unexpected error occurred.");
+      } else {
+        setError("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }
@@ -59,12 +63,16 @@ export default function Login() {
   return (
     <div className="md:flex md:min-h-screen bg-background md:p-6 py-6 gap-x-6">
       <div className="md:w-1/2 flex items-center justify-center">
-        <form onSubmit={handleSubmit} className="max-w-sm px-6 py-16 md:p-0 w-full">
+        <form
+          onSubmit={handleSubmit}
+          className="max-w-sm px-6 py-16 md:p-0 w-full"
+        >
           <div className="space-y-6 mb-6">
             <div className="flex flex-col gap-y-3">
               <h1 className="text-2xl md:text-3xl font-bold">Sign in</h1>
               <p className="text-muted-foreground text-sm">
-                Log in to unlock tailored content and stay connected with your community.
+                Log in to unlock tailored content and stay connected with your
+                community.
               </p>
             </div>
           </div>
@@ -98,7 +106,7 @@ export default function Login() {
               {loading ? "Signing in..." : "Sign In"}
             </Button>
             <p className="text-sm text-center text-muted-foreground">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link className="underline text-foreground" href="/auth/signup">
                 Sign up
               </Link>

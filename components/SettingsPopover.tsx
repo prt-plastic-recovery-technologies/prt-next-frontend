@@ -13,10 +13,7 @@ import PopoverContent from "@/components/PopoverContent";
 import {
   Dialog,
   DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
+  DialogContent
 } from "@/components/ui/dialog";
 
 export default function SettingsPopover() {

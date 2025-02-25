@@ -3,8 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   BadgeInfo,
   RefreshCcw,
@@ -22,17 +21,38 @@ import { useEffect, useState } from "react";
 
 import * as React from "react";
 
-import Cycles from "@/app/frontend/devices/detail/tabcontents/Cycles"
-import SystemStatus from "@/app/frontend/devices/detail/tabcontents/SystemStatus"
-import SettingsPopover from "@/components/SettingsPopover"
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import Cycles from "@/app/frontend/devices/detail/tabcontents/Cycles";
+import SystemStatus from "@/app/frontend/devices/detail/tabcontents/SystemStatus";
+import SettingsPopover from "@/components/SettingsPopover";
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 
 export default function Detail() {
+  interface Organization {
+    name: string;
+  }
+
+  interface Device {
+    name: string;
+    des: string;
+    address: string;
+    sn: string;
+    unit_num: string;
+  }
+
+  interface Detail {
+    organization?: Organization;
+    device?: Device;
+    current_status: string;
+    compacter_fullness: number;
+    safe_stop: string;
+    alert_status: string;
+    system_health: string;
+  }
+    
 
   const params = useParams();
   const id = params.id as string;
-  const [error, setError] = useState("");
-  const [detail, setDetail] = useState([]);
+  const [detail, setDetail] = useState<Detail | null>(null);
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -42,7 +62,7 @@ export default function Detail() {
       const token = localStorage.getItem("authToken");
 
       if (!token) {
-        setError("Authentication token is missing.");
+        console.log("Authentication token is missing.");
         return;
       }
 
@@ -58,8 +78,12 @@ export default function Detail() {
         const data = await response.json();
         console.log(data);
         setDetail(data);
-      } catch (err) {
-        setError("An error occurred while fetching device data.");
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.log(err.message || "An unexpected error occurred.");
+        } else {
+          console.log("An unexpected error occurred.");
+        }
       }
     };
 
@@ -92,7 +116,7 @@ export default function Detail() {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-3xl w-full">
-                    <SettingsPopover/>
+                    <SettingsPopover />
                   </DialogContent>
                 </Dialog>
                 <Button>
@@ -112,7 +136,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    {detail.organization?.name}
+                    {detail?.organization?.name}
                   </p>
                 </div>
 
@@ -123,7 +147,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    {detail.device?.des}
+                    {detail?.device?.des}
                   </p>
                 </div>
                 <div className="flex items-start">
@@ -133,7 +157,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    {detail.device?.address}
+                    {detail?.device?.address}
                   </p>
                 </div>
               </div>
@@ -145,7 +169,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
-                    {detail.device?.name}
+                    {detail?.device?.name}
                   </p>
                 </div>
 
@@ -156,7 +180,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
-                    {detail.device?.sn}
+                    {detail?.device?.sn}
                   </p>
                 </div>
 
@@ -167,7 +191,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
-                    {detail.device?.unit_num}
+                    {detail?.device?.unit_num}
                   </p>
                 </div>
               </div>
@@ -257,8 +281,15 @@ export default function Detail() {
             Diagnostic Tools
           </TabsTrigger>
         </TabsList>
-        <SystemStatus detail={detail} />
-        <Cycles/>
+        <SystemStatus detail={detail ?? {
+          current_status: "Unknown",
+          compacter_fullness: 0,
+          safe_stop: "Unknown",
+          alert_status: "Unknown",
+          system_health: "Unknown",
+        }} />
+
+        <Cycles />
       </Tabs>
     </div>
   );

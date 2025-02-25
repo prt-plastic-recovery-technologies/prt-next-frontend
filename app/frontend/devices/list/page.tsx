@@ -44,20 +44,6 @@ export default function DeviceList() {
   const [error, setError] = useState("");
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-  const getCsrfToken = async () => {
-    try {
-      const response = await fetch(`${API_URL}/api/auth/csrf/`, {
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (data.csrfToken) {
-        localStorage.setItem("csrfToken", data.csrfToken);
-      }
-    } catch (error) {
-      setError("Failed to fetch CSRF token");
-    }
-  };
-
   useEffect(() => {
     const fetchDevices = async () => {
       try {

@@ -1,9 +1,21 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { TabsContent } from "@/components/ui/tabs";
+import { Card, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
+
+
+interface SystemStatusProps {
+  detail: {
+    current_status: string;
+    compacter_fullness: number;
+    safe_stop: string;
+    alert_status: string;
+    system_health: string;
+  };
+}
+
 
 export default function SystemStatus({ detail }: SystemStatusProps) {
     return(
