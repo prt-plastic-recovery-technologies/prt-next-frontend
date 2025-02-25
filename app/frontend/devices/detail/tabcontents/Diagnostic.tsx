@@ -32,7 +32,7 @@ export default function Diagnostic() {
                 <div className="p-3 space-y-3">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {/* First Column */}
-                        <div className="bg-gray-100 dark:bg-gray-800 bg-muted rounded-lg p-3 space-y-4">
+                        <div className="bg-neutral-100 bg-muted rounded-lg p-3 space-y-4">
                             <div className="h-8 opacity-70">
                                 <p className="text-xs font-medium text-sidebar-foreground">
                                     Diagnostic Tools
@@ -56,7 +56,7 @@ export default function Diagnostic() {
                         </div>
 
                         {/* Second Column */}
-                        <div className="bg-gray-100 dark:bg-gray-800 bg-muted rounded-lg p-3 space-y-4">
+                        <div className="bg-neutral-100 bg-muted rounded-lg p-3 space-y-4">
                             <div className="h-8 opacity-70">
                                 <p className="text-xs font-medium text-sidebar-foreground">
                                     Diagnostic Tools
@@ -81,7 +81,7 @@ export default function Diagnostic() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div className="bg-gray-100 dark:bg-gray-800 bg-muted p-3 rounded-lg space-y-6">
+                        <div className="bg-neutral-100 bg-muted p-3 rounded-lg space-y-6">
                             <span className="text-xs font-medium text-muted-foreground opacity-70">
                                 System Heartbeats Health
                             </span>
@@ -95,7 +95,7 @@ export default function Diagnostic() {
                             </div>
                         </div>
 
-                        <div className="bg-gray-100 dark:bg-gray-800 bg-muted p-3 rounded-lg space-y-6">
+                        <div className="bg-neutral-100 bg-muted p-3 rounded-lg space-y-6">
                             <span className="text-xs font-medium text-muted-foreground opacity-70">
                                 Oil Temperature
                             </span>
@@ -108,7 +108,7 @@ export default function Diagnostic() {
                             </div>
                         </div>
 
-                        <div className="bg-gray-100 dark:bg-gray-800 bg-muted p-3 rounded-lg space-y-6">
+                        <div className="bg-neutral-100 bg-muted p-3 rounded-lg space-y-6">
                             <span className="text-xs font-medium text-muted-foreground opacity-70">
                                 System Temperature
                             </span>

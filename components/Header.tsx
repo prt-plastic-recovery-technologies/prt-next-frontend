@@ -30,14 +30,6 @@ export default function Header() {
             </Button>
           </nav>
         </div>
-
-        <Button
-          variant="secondary"
-          size="icon"
-          className="h-10 w-10 rounded-full"
-        >
-          <CircleUser className="h-4 w-4" />
-        </Button>
       </div>
     </header>
   )
