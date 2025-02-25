@@ -114,14 +114,18 @@ export default function Login() {
           </div>
         </form>
       </div>
-      <Image
-        src="/images/prtLogo.png"
-        alt="Image"
-        width={1800}
-        height={1800}
-        className="w-full max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl rounded-xl object-contain md:block hidden"
-      />
-
+      <div
+        className="flex items-center justify-center rounded-lg px-5"
+        style={{ background: "#16216a" }}
+      >
+        <Image
+          src="/images/prtLogo.png"
+          alt="Image"
+          width={1800}
+          height={1800}
+          className="w-full max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl rounded-lg object-contain md:block hidden"
+        />
+      </div>
     </div>
   );
 }
