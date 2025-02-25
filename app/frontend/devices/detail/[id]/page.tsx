@@ -24,6 +24,10 @@ import * as React from "react";
 import Cycles from "@/app/frontend/devices/detail/tabcontents/Cycles";
 import SystemStatus from "@/app/frontend/devices/detail/tabcontents/SystemStatus";
 import SettingsPopover from "@/components/SettingsPopover";
+import Maintenance from "@/app/frontend/devices/detail/tabcontents/Maintenance";
+import Alerts from "@/app/frontend/devices/detail/tabcontents/Alerts";
+import Connectivity from "@/app/frontend/devices/detail/tabcontents/Connectivity";
+import Diagnostic from "@/app/frontend/devices/detail/tabcontents/Diagnostic";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 
 export default function Detail() {
@@ -290,6 +294,10 @@ export default function Detail() {
         }} />
 
         <Cycles />
+        <Maintenance/>
+        <Alerts/>
+        <Connectivity/>
+        <Diagnostic/>
       </Tabs>
     </div>
   );
