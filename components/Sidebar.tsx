@@ -17,11 +17,10 @@ import Image from "next/image"
 export default function Sidebar() {
   return (
     <div className="flex h-screen w-64 flex-col bg-sidebar border-r border-sidebar-border">
-      {/* Header */}
       <div className="p-2 space-y-2">
         <div className="flex items-center gap-2 p-2 rounded-md">
           <Image
-            src="https://ui.shadcn.com/placeholder.svg"
+            src="/images/prtLogo.png"
             alt="Logo"
             width={32}
             height={32}
