@@ -13,8 +13,17 @@ import {
   ChevronsUpDown,
 } from "lucide-react"
 import Image from "next/image"
+import { useState } from "react"
+import { useRouter } from "next/navigation";
 
 export default function Sidebar() {
+  const [isOpen,SetisOpen] = useState(false);
+  const router = useRouter();
+  const handleLogOut = () =>{
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("refreshToken");
+    router.push("/");
+  }
   return (
     <div className="flex h-screen w-64 flex-col bg-sidebar border-r border-sidebar-border">
       <div className="p-2 space-y-2">
@@ -97,27 +106,46 @@ export default function Sidebar() {
       </div>
 
       {/* Footer */}
-      <div className="p-2">
-        <Button
-          variant="ghost"
-          className="w-full justify-between p-2"
-        >
-          <div className="flex items-center gap-2">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />
-            </Avatar>
-            <div className="flex flex-col items-start">
-              <span className="text-sm font-semibold text-sidebar-foreground">
-                shadcn
-              </span>
-              <span className="text-xs text-sidebar-foreground">
-                m@example.com
-              </span>
-            </div>
+  
+      <div className="p-2 relative">
+      {/* Dropdown Button */}
+      <Button
+        variant="ghost"
+        className="w-full justify-between p-2"
+        onClick={() => SetisOpen(!isOpen)}
+      >
+        <div className="flex items-center gap-2">
+          <Avatar className="h-8 w-8">
+            <AvatarImage src="https://github.com/shadcn.png" alt="User avatar" />
+          </Avatar>
+          <div className="flex flex-col items-start">
+            <span className="text-sm font-semibold text-sidebar-foreground">
+              shadcn
+            </span>
+            <span className="text-xs text-sidebar-foreground">
+              m@example.com
+            </span>
           </div>
-          <ChevronsUpDown className="h-4 w-4 text-sidebar-foreground" />
-        </Button>
-      </div>
+        </div>
+        <ChevronsUpDown
+          className={`h-4 w-4 text-sidebar-foreground transition-transform ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </Button>
+      {isOpen && (
+        <div className="absolute left-0 bottom-full mb-2 w-full bg-white border rounded-lg shadow-lg z-50">
+          <ul className="p-2 text-sm text-gray-700">
+            {/* <li className="p-2 hover:bg-gray-100 cursor-pointer">Profile</li>
+            <li className="p-2 hover:bg-gray-100 cursor-pointer">Settings</li> */}
+            <li 
+            className="p-2 font-bold text-red-500 hover:bg-gray-100 cursor-pointer"
+            onClick={handleLogOut}
+            >Logout</li>
+          </ul>
+        </div>
+      )}
+    </div>
     </div>
   )
 }
