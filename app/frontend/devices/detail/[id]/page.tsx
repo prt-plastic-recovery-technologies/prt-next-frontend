@@ -140,7 +140,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    {detail?.organization?.name}
+                    {detail?.organization?.name || '----------'}
                   </p>
                 </div>
 
@@ -151,7 +151,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    {detail?.device?.des}
+                    {detail?.device?.des !== 'default' ? detail?.device?.des : '----------'}
                   </p>
                 </div>
                 <div className="flex items-start">
@@ -161,7 +161,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    {detail?.device?.address}
+                    {detail?.device?.address || '----------'}
                   </p>
                 </div>
               </div>
@@ -173,7 +173,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
-                    {detail?.device?.name}
+                    {detail?.device?.name !== 'undefined' ? detail?.device?.name : '----------'}
                   </p>
                 </div>
 
@@ -184,7 +184,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
-                    {detail?.device?.sn}
+                    {detail?.device?.sn || '----------'}
                   </p>
                 </div>
 
@@ -195,7 +195,7 @@ export default function Detail() {
                     </p>
                   </div>
                   <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
-                    {detail?.device?.unit_num}
+                    {detail?.device?.unit_num || '----------'}
                   </p>
                 </div>
               </div>
