@@ -99,7 +99,7 @@ export default function Diagnostic() {
                             <span className="text-xs font-medium text-muted-foreground opacity-70">
                                 Oil Temperature
                             </span>
-                            <div className="h-[200px]">
+                            <div className="h-[230px]">
                                 <LineChart data={chartData} />
                                 <div className="mt-4 flex justify-center items-center gap-1.5">
                                     <div className="h-2 w-2 rounded bg-cyan-600" />
@@ -112,7 +112,7 @@ export default function Diagnostic() {
                             <span className="text-xs font-medium text-muted-foreground opacity-70">
                                 System Temperature
                             </span>
-                            <div className="h-[200px]">
+                            <div className="h-[230px]">
                                 <LineChart data={chartData} />
                                 <div className="mt-4 flex justify-center items-center gap-1.5">
                                     <div className="h-2 w-2 rounded bg-cyan-600" />

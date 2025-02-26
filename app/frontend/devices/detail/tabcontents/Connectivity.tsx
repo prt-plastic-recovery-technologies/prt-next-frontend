@@ -37,24 +37,32 @@ export default function Connectivity() {
         </div>
 
         {/* Stats */}
-        <div className="flex gap-6">
-          <div className="bg-neutral-100 rounded-md p-2 space-y-3 dark:bg-neutral-800">
-            <p className="text-xs text-sidebar-foreground">Firmware version</p>
-            <p className="text-sm font-medium text-neutral-950 dark:text-neutral-50">856</p>
-          </div>
-          <div className="bg-neutral-100 rounded-md p-2 space-y-3 dark:bg-neutral-800">
-            <p className="text-xs text-sidebar-foreground">Last heartbeat</p>
-            <p className="text-sm font-medium text-neutral-950 dark:text-neutral-50">856</p>
-          </div>
-          <div className="bg-neutral-100 rounded-md p-2 space-y-3 dark:bg-neutral-800">
-            <p className="text-xs text-sidebar-foreground">Cell connectivity status</p>
-            <Badge variant="default">Cell PWR</Badge>
-          </div>
-          <div className="bg-neutral-100 rounded-md p-2 space-y-3 dark:bg-neutral-800">
-            <p className="text-xs text-sidebar-foreground">GPS</p>
-            <p className="text-sm font-medium text-neutral-950 dark:text-neutral-50">41.40338, 2.17403</p>
-          </div>
-        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+  {/* Firmware Version */}
+  <div className="bg-neutral-100 rounded-md p-2 space-y-3 dark:bg-neutral-800">
+    <p className="text-xs text-sidebar-foreground">Firmware version</p>
+    <p className="text-sm font-medium text-neutral-950 dark:text-neutral-50">856</p>
+  </div>
+
+  {/* Last Heartbeat */}
+  <div className="bg-neutral-100 rounded-md p-2 space-y-3 dark:bg-neutral-800">
+    <p className="text-xs text-sidebar-foreground">Last heartbeat</p>
+    <p className="text-sm font-medium text-neutral-950 dark:text-neutral-50">856</p>
+  </div>
+
+  {/* Cell Connectivity Status */}
+  <div className="bg-neutral-100 rounded-md p-2 space-y-3 dark:bg-neutral-800">
+    <p className="text-xs text-sidebar-foreground">Cell connectivity status</p>
+    <Badge variant="default">Cell PWR</Badge>
+  </div>
+
+  {/* GPS */}
+  <div className="bg-neutral-100 rounded-md p-2 space-y-3 dark:bg-neutral-800">
+    <p className="text-xs text-sidebar-foreground">GPS</p>
+    <p className="text-sm font-medium text-neutral-950 dark:text-neutral-50">41.40338, 2.17403</p>
+  </div>
+</div>
+
 
         {/* Alerts Table */}
         <div>

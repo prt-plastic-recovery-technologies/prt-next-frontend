@@ -64,7 +64,7 @@ export default function Maintenance() {
                     />
                     <Progress
                       value={100}
-                      className="h-[109px] rounded-[5.57px] -mt-[118px] pl-[2px] pr-[292px] pt-[09px] pb-[2px]"
+                      className="h-[109px] rounded-[5.57px] -mt-[118px] pl-[2px] md:pr-[292px] pr-[228px] md:pt-[10px] pt-[33px] pb-[4px]"
                     />
                   </div>
 

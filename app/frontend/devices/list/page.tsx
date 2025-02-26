@@ -87,37 +87,39 @@ export default function DeviceList() {
   return (
     <div>
       <div className="border-b px-6 py-6">
-        <div className="flex justify-between items-center gap-2 ">
-          <div className="flex flex-col gap-1">
-            <h2 className="text-neutral-950 text-base font-medium leading-none dark:text-neutral-50">
-              Manage devices
-            </h2>
-            <p className="text-neutral-500 text-xs font-medium leading-none dark:text-neutral-400">
-              This section allows you to add, edit, and manage all devices.
-            </p>
-          </div>
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+  {/* Title and Description */}
+  <div className="flex flex-col gap-1">
+    <h2 className="text-neutral-950 text-base font-medium leading-none dark:text-neutral-50">
+      Manage Devices
+    </h2>
+    <p className="text-neutral-500 text-xs font-medium leading-none dark:text-neutral-400">
+      This section allows you to add, edit, and manage all devices.
+    </p>
+  </div>
 
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-500 dark:text-neutral-400" />
-              <Input
-                className="pl-9 h-10 w-[280px]"
-                placeholder="Search devices"
-                type="search"
-              />
-            </div>
+  {/* Search & Filters - Responsive */}
+  <div className="flex flex-col sm:flex-row items-start sm:items-center w-full sm:w-auto gap-3">
+    {/* Search Input */}
+    <div className="relative w-full sm:max-w-[280px]">
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-500 dark:text-neutral-400" />
+      <Input className="pl-9 h-10 w-full sm:w-[280px]" placeholder="Search devices" type="search" />
+    </div>
 
-            <Button variant="outline">
-              Organization
-              <ChevronDown className="h-4 w-4" />
-            </Button>
+    {/* Filters - Stack on mobile, inline on desktop */}
+    <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-2">
+      <Button variant="outline" className="w-full sm:w-auto">
+        Organization
+        <ChevronDown className="h-4 w-4" />
+      </Button>
+      <Button variant="outline" className="w-full sm:w-auto">
+        Compactor Status
+        <ChevronDown className="h-4 w-4" />
+      </Button>
+    </div>
+  </div>
+</div>
 
-            <Button variant="outline">
-              Compactor Status
-              <ChevronDown className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
       </div>
 
       <div className="p-6">

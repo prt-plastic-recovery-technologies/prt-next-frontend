@@ -52,7 +52,6 @@ export default function Detail() {
     alert_status: string;
     system_health: string;
   }
-    
 
   const params = useParams();
   const id = params.id as string;
@@ -95,25 +94,23 @@ export default function Detail() {
   }, [id, API_URL]);
   return (
     <div className="space-y-3 p-3">
-      <div className="flex gap-3">
-        <Card className="flex-1">
-          <CardHeader className="space-y-3 p-3">
-            <div className="flex justify-between items-center">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+        {/* Device Details - 10 Columns */}
+        <Card className="md:col-span-10">
+          <CardHeader className="p-3">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
               <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-base font-semibold">Device details</h3>
-                </div>
+                <h3 className="text-base font-semibold">Device Details</h3>
                 <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                  View and update your assets details here.
+                  View and update your asset details here.
                 </p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <Button variant="secondary">
                   <RefreshCcw className="h-4 w-4 mr-2" />
                   Sync Compactor
                 </Button>
                 <Dialog>
-                  {/* Trigger Button */}
                   <DialogTrigger asChild>
                     <Button variant="setting">
                       <Settings className="h-4 w-4" />
@@ -133,76 +130,79 @@ export default function Detail() {
           <CardContent className="p-3">
             <div className="grid grid-cols-2 gap-3">
               <div className="flex flex-col gap-1 bg-neutral-100 p-2 rounded-md dark:bg-neutral-800">
-                <div className="flex items-start">
-                  <div className="flex items-center gap-2 w-[120px]">
+                <div className="flex flex-col gap-1 bg-neutral-100 p-2 rounded-md dark:bg-neutral-800">
+                  <div className="flex flex-col sm:flex-row sm:justify-between">
                     <p className="text-sm text-neutral-950 dark:text-neutral-50">
                       Name
                     </p>
+                    <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                      {detail?.organization?.name || "----------"}
+                    </p>
                   </div>
-                  <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    {detail?.organization?.name || '----------'}
-                  </p>
                 </div>
-
-                <div className="flex items-start">
-                  <div className="flex items-center gap-2 w-[120px]">
+                <div className="flex flex-col gap-1 bg-neutral-100 p-2 rounded-md dark:bg-neutral-800">
+                  <div className="flex flex-col sm:flex-row sm:justify-between">
                     <p className="text-sm text-neutral-950 dark:text-neutral-50">
                       Description
                     </p>
+                    <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                      {detail?.device?.des !== "default"
+                        ? detail?.device?.des
+                        : "----------"}
+                    </p>
                   </div>
-                  <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    {detail?.device?.des !== 'default' ? detail?.device?.des : '----------'}
-                  </p>
                 </div>
-                <div className="flex items-start">
-                  <div className="flex items-center gap-2 w-[120px]">
+                <div className="flex flex-col gap-1 bg-neutral-100 p-2 rounded-md dark:bg-neutral-800">
+                  <div className="flex flex-col sm:flex-row sm:justify-between">
                     <p className="text-sm text-neutral-950 dark:text-neutral-50">
                       Address
                     </p>
+                    <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                      {detail?.device?.address || "----------"}
+                    </p>
                   </div>
-                  <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                    {detail?.device?.address || '----------'}
-                  </p>
                 </div>
               </div>
               <div className="bg-neutral-100 rounded-default p-2 flex flex-col gap-1 dark:bg-neutral-800">
-                <div className="flex">
-                  <div className="flex gap-2 w-[120px]">
-                    <p className="text-xs text-neutral-950 leading-4 dark:text-neutral-50">
+                <div className="flex flex-col gap-1 bg-neutral-100 p-2 rounded-md dark:bg-neutral-800">
+                  <div className="flex flex-col sm:flex-row sm:justify-between">
+                    <p className="text-sm text-neutral-950 dark:text-neutral-50">
                       Site
                     </p>
+                    <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
+                      {detail?.device?.name !== "undefined"
+                        ? detail?.device?.name
+                        : "----------"}
+                    </p>
                   </div>
-                  <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
-                    {detail?.device?.name !== 'undefined' ? detail?.device?.name : '----------'}
-                  </p>
                 </div>
-
-                <div className="flex">
-                  <div className="flex gap-2 w-[120px]">
-                    <p className="text-xs text-neutral-950 leading-4 dark:text-neutral-50">
+                <div className="flex flex-col gap-1 bg-neutral-100 p-2 rounded-md dark:bg-neutral-800">
+                  <div className="flex flex-col sm:flex-row sm:justify-between">
+                    <p className="text-sm text-neutral-950 dark:text-neutral-50">
                       Serial Number
                     </p>
-                  </div>
-                  <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
-                    {detail?.device?.sn || '----------'}
-                  </p>
-                </div>
-
-                <div className="flex">
-                  <div className="flex gap-2 w-[120px]">
-                    <p className="text-xs text-neutral-950 leading-4 dark:text-neutral-50">
-                      Unit Number
+                    <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
+                      {detail?.device?.sn || "----------"}
                     </p>
                   </div>
-                  <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
-                    {detail?.device?.unit_num || '----------'}
-                  </p>
+                </div>
+                <div className="flex flex-col gap-1 bg-neutral-100 p-2 rounded-md dark:bg-neutral-800">
+                  <div className="flex flex-col sm:flex-row sm:justify-between">
+                    <p className="text-sm text-neutral-950 dark:text-neutral-50">
+                      Unit Number
+                    </p>
+                    <p className="text-sm text-neutral-500 dark:text-neutral-400">
+                      <p className="text-xs text-neutral-500 leading-4 dark:text-neutral-400">
+                        {detail?.device?.unit_num || "----------"}
+                      </p>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card className="w-[140px] flex items-center justify-center bg-neutral-900 dark:bg-neutral-50">
+        <Card className="md:col-span-2 flex items-center justify-center bg-neutral-900 dark:bg-neutral-50 w-[140px] mx-auto">
           <div className="space-y-6">
             <div className="grid grid-cols-2 gap-6">
               <div className="text-center">
@@ -259,45 +259,50 @@ export default function Detail() {
       </div>
 
       <Tabs defaultValue="system-status" className="w-full">
-        <TabsList>
-          <TabsTrigger value="system-status" className="gap-2">
+        <TabsList className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+          <TabsTrigger value="system-status">
             <BadgeInfo className="h-4 w-4" />
             System Status
           </TabsTrigger>
-          <TabsTrigger value="cycles" className="gap-2">
+          <TabsTrigger value="cycles">
             <Repeat className="h-4 w-4" />
             Cycles
           </TabsTrigger>
-          <TabsTrigger value="maintenance" className="gap-2">
+          <TabsTrigger value="maintenance">
             <ServerCog className="h-4 w-4" />
             Maintenance
           </TabsTrigger>
-          <TabsTrigger value="alerts" className="gap-2">
+          <TabsTrigger value="alerts">
             <ShieldAlert className="h-4 w-4" />
             Alerts
           </TabsTrigger>
-          <TabsTrigger value="connectivity" className="gap-2">
+          <TabsTrigger value="connectivity">
             <Unplug className="h-4 w-4" />
             Connectivity
           </TabsTrigger>
-          <TabsTrigger value="diagnostic" className="gap-2">
+          <TabsTrigger value="diagnostic">
             <InspectionPanel className="h-4 w-4" />
             Diagnostic Tools
           </TabsTrigger>
         </TabsList>
-        <SystemStatus detail={detail ?? {
-          current_status: "Unknown",
-          compacter_fullness: 0,
-          safe_stop: "Unknown",
-          alert_status: "Unknown",
-          system_health: "Unknown",
-        }} />
-
+        <div className="mt-[100px] md:mt-0">
+        <SystemStatus
+          detail={
+            detail ?? {
+              current_status: "Unknown",
+              compacter_fullness: 0,
+              safe_stop: "Unknown",
+              alert_status: "Unknown",
+              system_health: "Unknown",
+            }
+          }
+        />
         <Cycles />
-        <Maintenance/>
-        <Alerts/>
-        <Connectivity/>
-        <Diagnostic/>
+        <Maintenance />
+        <Alerts />
+        <Connectivity />
+        <Diagnostic />
+        </div>
       </Tabs>
     </div>
   );

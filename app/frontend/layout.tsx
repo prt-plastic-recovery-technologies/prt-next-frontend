@@ -24,6 +24,7 @@ import {
   Users,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { ModeToggle } from "@/components/theme-toggler";
 
 // Define the DefaultLogo component outside of the Layout component
 const DefaultLogo = () => (
@@ -67,7 +68,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     },
     navMain: [
       { title: "Dashboard", url: "#", icon: Home },
-      { title: "Devices", url: "#", icon: Keyboard },
+      { title: "Devices", url: "/frontend/devices/list", icon: Keyboard },
       { title: "User Activity", url: "#", icon: Activity },
       { title: "Alert History", url: "#", icon: BarChart2 },
       { title: "Reporting", url: "#", icon: FileBarChart },
@@ -97,6 +98,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       <SidebarInset className="flex-1 overflow-hidden">
         <Header />
+        {/* <div className="flex items-center">
+                <ModeToggle />
+              </div> */}
+
         <div className="bg-background h-full overflow-auto">
           {/* Main content container */}
           {children}
