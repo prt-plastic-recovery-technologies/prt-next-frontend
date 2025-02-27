@@ -15,8 +15,39 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-export default function Connectivity() {
-  const [selectedRows, setSelectedRows] = useState<string[]>([])
+interface AlertLog {
+  id: number;
+  alert_type: string;
+  timestamp: string;
+  recipients: string;
+  status: string;
+}
+interface AlertsProps {
+  email_logs: AlertLog[];
+  id: string;
+  sn?: string;
+  // device_alerts: DeviceAlert[];
+}
+
+export default function Connectivity({ email_logs, id, sn }: AlertsProps) {
+
+  const alertTypeMapping: Record<string, string> = {
+    a0: "SYSTEM COMM",
+    a1: "80% FULLNESS",
+    a2: "100% FULLNESS",
+    a3: "80% OIL TEMP",
+    a4: "100% OIL TEMP",
+    a5: "LOW OIL",
+    a6: "80% PM",
+    a7: "100% PM",
+    a8: "80% BACKPACK",
+    a9: "100% BACKPACK",
+    a10: "AUTO SHUTDOWN",
+    a11: "REMOTE SHUTDOWN",
+    a12: "SYSTEM RESET",
+    a13: "MOTOR OVERLOAD",
+    a14: "SYSTEM ALERT",
+  };
 
   return (
     <TabsContent value="connectivity">
@@ -107,22 +138,23 @@ export default function Connectivity() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Array.from({ length: 8 }).map((_, i) => (
-                <TableRow key={i}>
+              {email_logs.map((row) => (
+                <TableRow key={row.id}>
                   <TableCell>
                     <Checkbox />
                   </TableCell>
-                  <TableCell>943</TableCell>
-                  <TableCell>a0</TableCell>
-                  <TableCell>System Comm</TableCell>
+                  <TableCell>{row.id}</TableCell>
+                  <TableCell>{row.alert_type}</TableCell>
+                  <TableCell>{alertTypeMapping[row.alert_type] || "Unknown Alert"}</TableCell>
                   <TableCell>
-                    <div className="flex gap-2">
-                      <Badge variant="secondary">GSimone@PRTParts.com</Badge>
-                      <Badge variant="secondary">...</Badge>
-                    </div>
-                  </TableCell>
-                  <TableCell>33</TableCell>
-                  <TableCell>6140495</TableCell>
+                        <div className="flex gap-2 flex-wrap">
+                          {row.recipients.split(',').map((recipient, index) => (
+                            <Badge key={index} variant="secondary">{recipient.trim()}</Badge>
+                          ))}
+                        </div>
+                      </TableCell>
+                  <TableCell>{id}</TableCell>
+                  <TableCell>{sn}</TableCell>
                   <TableCell>
                     <Button variant="ghost" size="icon">
                       <MoreHorizontal className="h-4 w-4" />

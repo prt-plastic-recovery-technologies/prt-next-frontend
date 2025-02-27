@@ -43,6 +43,11 @@ export default function Detail() {
     unit_num: string;
   }
 
+  interface Device_Alerts {
+    id: string;
+    sn: string;
+  }
+
   interface Detail {
     organization?: Organization;
     device?: Device;
@@ -53,9 +58,22 @@ export default function Detail() {
     system_health: string;
   }
 
+  interface Email {
+    email_logs: {
+      id: number;
+      alert_type: string;
+      timestamp: string;
+      recipients: string;
+      status: string;
+    }[];
+  }
+  
+
   const params = useParams();
   const id = params.id as string;
   const [detail, setDetail] = useState<Detail | null>(null);
+  const [emailLogs, setEmailLogs] = useState<Email>({ email_logs: [] });
+
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -80,7 +98,10 @@ export default function Detail() {
         });
         const data = await response.json();
         console.log(data);
+      
+        setEmailLogs({ email_logs: data.email_logs || [] });
         setDetail(data);
+        
       } catch (err: unknown) {
         if (err instanceof Error) {
           console.log(err.message || "An unexpected error occurred.");
@@ -299,8 +320,8 @@ export default function Detail() {
         />
         <Cycles />
         <Maintenance />
-        <Alerts />
-        <Connectivity />
+        <Alerts email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} />
+        <Connectivity email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} />
         <Diagnostic />
         </div>
       </Tabs>
