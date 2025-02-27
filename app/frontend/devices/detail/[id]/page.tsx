@@ -67,12 +67,19 @@ export default function Detail() {
       status: string;
     }[];
   }
+  interface Connectivity {
+    name: string;
+    value: any;
+  }
+  
   
 
   const params = useParams();
   const id = params.id as string;
   const [detail, setDetail] = useState<Detail | null>(null);
   const [emailLogs, setEmailLogs] = useState<Email>({ email_logs: [] });
+  const [connectivityDetails, setConnectivityDetails] = useState<Connectivity[]>([]);
+
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -100,6 +107,7 @@ export default function Detail() {
         console.log(data);
       
         setEmailLogs({ email_logs: data.email_logs || [] });
+        setConnectivityDetails(data.connectivity_details || []);
         setDetail(data);
         
       } catch (err: unknown) {
@@ -321,7 +329,7 @@ export default function Detail() {
         <Cycles />
         <Maintenance />
         <Alerts email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} />
-        <Connectivity email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} />
+        <Connectivity email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} connectivity_details={connectivityDetails} />
         <Diagnostic />
         </div>
       </Tabs>
