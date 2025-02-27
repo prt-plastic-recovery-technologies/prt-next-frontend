@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -47,8 +47,27 @@ export default function DeviceList() {
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [unitStatuses, setUnitStatuses] = useState<string[]>([]);
   const [orgName, setorgName] = useState<{ id: string; name: string }[]>([]);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const statusDropdownRef = useRef<HTMLDivElement>(null);
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setisOpen(false);
+      }
+      if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target as Node)) {
+        setStatusisOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   useEffect(() => {
     fetchDevices();
   }, []);
@@ -133,7 +152,7 @@ export default function DeviceList() {
               />
             </div>
 
-            <div className="relative">
+            <div className="relative" ref={dropdownRef}>
               <Button
                 variant="outline"
                 onClick={() => setisOpen(!isOpen)}
@@ -176,16 +195,9 @@ export default function DeviceList() {
                   </ul>
                 </div>
               )}
-
-
-
-
-
             </div>
 
-
-
-            <div className="relative">
+            <div className="relative" ref={statusDropdownRef}>
               <Button variant="outline" onClick={() => setStatusisOpen(!statusisOpen)}>
                 Unit Status
                 <ChevronDown className="h-4 w-4" />
