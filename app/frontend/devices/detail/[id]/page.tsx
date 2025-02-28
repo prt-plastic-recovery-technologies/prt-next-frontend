@@ -80,6 +80,7 @@ export default function Detail() {
   const [emailLogs, setEmailLogs] = useState<Email>({ email_logs: [] });
   const [connectivityDetails, setConnectivityDetails] = useState<Connectivity[]>([]);
   const [pressureData, setPressureData] = useState<{ timestamp: string; pressure: number }[]>([]);
+  const [pressureData_avg, setPressureData_avg] = useState<{ timestamp: string; pressure: number }[]>([]);
 
 
 
@@ -111,6 +112,7 @@ export default function Detail() {
         setEmailLogs({ email_logs: data.email_logs || [] });
         setConnectivityDetails(data.connectivity_details || []);
         setPressureData(data.pressure_data || []);
+        setPressureData_avg(data.pressure_data_24h_avg || []);
         setDetail(data);
         
       } catch (err: unknown) {
@@ -330,7 +332,7 @@ export default function Detail() {
           }
         />
         {/* <Cycles /> */}
-        <Cycles pressureData={pressureData} />
+        <Cycles pressureData_avg ={pressureData_avg} pressureData={pressureData} />
         <Maintenance />
         <Alerts email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} />
         <Connectivity email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} connectivity_details={connectivityDetails} />

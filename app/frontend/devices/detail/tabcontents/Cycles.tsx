@@ -41,10 +41,11 @@ interface PressureData {
 }
 interface CyclesProps {
   pressureData: PressureData[];
+  pressureData_avg:PressureData[];
 }
 
 
-export default function Cycles({pressureData}:CyclesProps) {
+export default function Cycles({pressureData,pressureData_avg}:CyclesProps) {
   const [selectedRows, setSelectedRows] = React.useState<string[]>([]);
   const data = Array(8).fill({
     startTime: "2025-02-10 09:00:00",
@@ -106,21 +107,21 @@ export default function Cycles({pressureData}:CyclesProps) {
           <div className="flex flex-col gap-10">
             <div className="h-[250px] sm:h-[300px]">
               <ChartContainer config={chartConfig}>
-                <BarChart accessibilityLayer data={chartData}>
+                <BarChart accessibilityLayer data={pressureData_avg}>
                   <CartesianGrid vertical={false} />
                   <XAxis
-                    dataKey="month"
+                    dataKey="timestamp"
                     tickLine={false}
                     tickMargin={10}
                     axisLine={false}
-                    tickFormatter={(value) => value.slice(0, 3)}
+                    tickFormatter={(value) => value.slice(0, 16)}
                   />
                   <ChartTooltip
                     cursor={false}
                     content={<ChartTooltipContent hideLabel />}
                   />
                   <Bar
-                    dataKey="desktop"
+                    dataKey="pressure"
                     fill="var(--color-desktop)"
                     radius={8}
                   />
