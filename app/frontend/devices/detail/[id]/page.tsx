@@ -357,7 +357,6 @@ export default function Detail() {
                 system_health: "Unknown",
               }
             }
-          }
         />
         {/* <Cycles /> */}
         <Cycles pressureData_avg ={pressureData_avg} pressureData={pressureData} />
