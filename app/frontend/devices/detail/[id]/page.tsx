@@ -43,6 +43,11 @@ export default function Detail() {
     unit_num: string;
   }
 
+  interface Device_Alerts {
+    id: string;
+    sn: string;
+  }
+
   interface Detail {
     organization?: Organization;
     device?: Device;
@@ -53,9 +58,32 @@ export default function Detail() {
     system_health: string;
   }
 
+  interface Email {
+    email_logs: {
+      id: number;
+      alert_type: string;
+      timestamp: string;
+      recipients: string;
+      status: string;
+    }[];
+  }
+  interface Connectivity {
+    name: string;
+    value: any;
+  }
+  
+  
+
   const params = useParams();
   const id = params.id as string;
   const [detail, setDetail] = useState<Detail | null>(null);
+  const [emailLogs, setEmailLogs] = useState<Email>({ email_logs: [] });
+  const [connectivityDetails, setConnectivityDetails] = useState<Connectivity[]>([]);
+  const [pressureData, setPressureData] = useState<{ timestamp: string; pressure: number }[]>([]);
+  const [pressureData_avg, setPressureData_avg] = useState<{ timestamp: string; pressure: number }[]>([]);
+
+
+
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -80,7 +108,13 @@ export default function Detail() {
         });
         const data = await response.json();
         console.log(data);
+      
+        setEmailLogs({ email_logs: data.email_logs || [] });
+        setConnectivityDetails(data.connectivity_details || []);
+        setPressureData(data.pressure_data || []);
+        setPressureData_avg(data.pressure_data_24h_avg || []);
         setDetail(data);
+        
       } catch (err: unknown) {
         if (err instanceof Error) {
           console.log(err.message || "An unexpected error occurred.");
@@ -323,12 +357,14 @@ export default function Detail() {
                 system_health: "Unknown",
               }
             }
-          />
-          <Cycles />
-          <Maintenance />
-          <Alerts />
-          <Connectivity />
-          <Diagnostic />
+          }
+        />
+        {/* <Cycles /> */}
+        <Cycles pressureData_avg ={pressureData_avg} pressureData={pressureData} />
+        <Maintenance />
+        <Alerts email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} />
+        <Connectivity email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} connectivity_details={connectivityDetails} />
+        <Diagnostic />
         </div>
       </Tabs>
     </div>
