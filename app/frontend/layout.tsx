@@ -34,8 +34,6 @@ const DefaultLogo = () => (
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  // Define all state hooks at the top level, before any conditional returns
-  const [isOpen, setIsOpen] = useState(false);
 
   const checkAuth = () => {
     if (typeof window !== "undefined") {
@@ -52,12 +50,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     checkAuth();
   }, []);
-
-  const handleLogOut = () => {
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("refreshToken");
-    router.push("/");
-  };
 
   // Define data outside of the conditional rendering
   const data = {

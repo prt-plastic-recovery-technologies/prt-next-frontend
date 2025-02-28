@@ -117,7 +117,34 @@ export default function Detail() {
                     </Button>
                   </DialogTrigger>
                   <DialogContent className="max-w-3xl w-full">
-                    <SettingsPopover />
+                    <SettingsPopover
+                      device={
+                        detail?.device ?? {
+                          s1: false,
+                          s2: false,
+                          s3: false,
+                          s4: false,
+                          s5: false,
+                          s6: false,
+                          s7: false,
+                          s8: false,
+                          s9: false,
+                          s10: false,
+                          s11: false,
+                          s12: false,
+                          zs1: null,
+                          zs2: null,
+                          zs3: null,
+                          zs4: null,
+                          zs5: null,
+                          zs6: null,
+                          zs7: null,
+                          zs8: null,
+                          zs9: null,
+                          zs10: null,
+                        }
+                      }
+                    />
                   </DialogContent>
                 </Dialog>
                 <Button>
@@ -286,22 +313,22 @@ export default function Detail() {
           </TabsTrigger>
         </TabsList>
         <div className="mt-[100px] md:mt-0">
-        <SystemStatus
-          detail={
-            detail ?? {
-              current_status: "Unknown",
-              compacter_fullness: 0,
-              safe_stop: "Unknown",
-              alert_status: "Unknown",
-              system_health: "Unknown",
+          <SystemStatus
+            detail={
+              detail ?? {
+                current_status: "Unknown",
+                compacter_fullness: 0,
+                safe_stop: "Unknown",
+                alert_status: "Unknown",
+                system_health: "Unknown",
+              }
             }
-          }
-        />
-        <Cycles />
-        <Maintenance />
-        <Alerts />
-        <Connectivity />
-        <Diagnostic />
+          />
+          <Cycles />
+          <Maintenance />
+          <Alerts />
+          <Connectivity />
+          <Diagnostic />
         </div>
       </Tabs>
     </div>
