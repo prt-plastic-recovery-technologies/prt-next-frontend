@@ -13,65 +13,67 @@ import PopoverContent from "@/components/PopoverContent";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 
 interface SystemStatusProps {
+  organization?: {
+    name: string
+  }
   device?: {
     id: bigint;
-    s1: boolean;
-    s2: boolean;
-    s3: boolean;
-    s4: boolean;
-    s5: boolean;
-    s6: boolean;
-    s7: boolean;
-    s8: boolean;
-    s9: boolean;
-    s10: boolean;
-    s11: boolean;
-    s12: boolean;
-    zs1: bigint;
-    zs2: bigint;
-    zs3: bigint;
-    zs4: bigint;
-    zs5: bigint;
-    zs6: bigint;
-    zs7: bigint;
-    zs8: bigint;
-    zs9: bigint;
-    zs10: bigint;
+    s1: string;
+    s2: string;
+    s3: string;
+    s4: string;
+    s5: string;
+    s6: string;
+    s7: string;
+    s8: string;
+    s9: string;
+    s10: string;
+    s11: string;
+    s12: string;
+    zs1: string;
+    zs2: string;
+    zs3: string;
+    zs4: string;
+    zs5: string;
+    zs6: string;
+    zs7: string;
+    zs8: string;
+    zs9: string;
+    zs10: string;
   };
 }
 
-export default function SettingsPopover({ device }: SystemStatusProps) {
-
+export default function SettingsPopover({ device, organization }: SystemStatusProps) {
   const [loading, setLoading] = useState(false);
-  
+
   const [switches, setSwitches] = React.useState({
-    stopForward: device?.s1 ?? false,
-    holdToRun: device?.s2 ?? false,
-    startForward: device?.s3 ?? false,
-    singlePhase: device?.s4 ?? false,
-    multiCycle: device?.s5 ?? false,
-    retPressure: device?.s6 ?? false,
-    doorCount: device?.s7 ?? false,
-    forwardTime: device?.s8 ?? false,
-    revTime: device?.s9 ?? false,
-    timerStatus: device?.s10 ?? false,
-    timerStartTime: device?.s11 ?? false,
-    additionalFeature: device?.s12 ?? false,
+    stopForward: device?.s1 === "1", 
+    holdToRun: device?.s2 === "1",
+    startForward: device?.s3 === "1",
+    singlePhase: device?.s4 === "1",
+    multiCycle: device?.s5 === "1",
+    retPressure: device?.s6 === "1",
+    doorCount: device?.s7 === "1",
+    forwardTime: device?.s8 === "1",
+    revTime: device?.s9 === "1",
+    timerStatus: device?.s10 === "1",
+    timerStartTime: device?.s11 === "1",
+    additionalFeature: device?.s12 === "1",
   });
 
   const [sliders, setSliders] = React.useState({
-    advanceFullness: [device?.zs1 ?? 1600, 1200, 1600],
-    maximumFullness: [device?.zs2 ?? 1800, 1200, 2400],
-    oilTemp80: [device?.zs3 ?? 112, 112, 130],
-    oilTemp100: [device?.zs4 ?? 140, 130, 150],
-    motorRunTime80: [device?.zs5 ?? 80, 50, 80],
-    motorRunTime100: [device?.zs6 ?? 100, 90, 120],
-    pmCycles80: [device?.zs7 ?? 7200, 6000, 7500],
-    pmCycles100: [device?.zs8 ?? 9000, 7600, 10000],
-    advanceBackpack: [device?.zs9 ?? 1800, 1500, 1800],
-    maximumBackpack: [device?.zs10 ?? 2000, 1900, 2200],
+    advanceFullness: [Number(device?.zs1) || 1600, 1200, 1600],
+    maximumFullness: [Number(device?.zs2) || 1800, 1200, 2400],
+    oilTemp80: [Number(device?.zs3) || 112, 112, 130],
+    oilTemp100: [Number(device?.zs4) || 140, 130, 150],
+    motorRunTime80: [Number(device?.zs5) || 80, 50, 80],
+    motorRunTime100: [Number(device?.zs6) || 100, 90, 120],
+    pmCycles80: [Number(device?.zs7) || 7200, 6000, 7500],
+    pmCycles100: [Number(device?.zs8) || 9000, 7600, 10000],
+    advanceBackpack: [Number(device?.zs9) || 1800, 1500, 1800],
+    maximumBackpack: [Number(device?.zs10) || 2000, 1900, 2200],
   });
-
+  
 
   const onSaveChanges = async () => {
     if (!device?.id) return;
@@ -87,15 +89,19 @@ export default function SettingsPopover({ device }: SystemStatusProps) {
     };
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
+    const token = localStorage.getItem("authToken");
     try {
-      const response = await fetch(`${API_URL}/api/device/update/${device.id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const response = await fetch(
+        `${API_URL}/api/device/update/${device.id}/`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       if (response.ok) {
         console.log("Device settings updated successfully!");
@@ -118,9 +124,9 @@ export default function SettingsPopover({ device }: SystemStatusProps) {
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <h2 className="text-neutral-950 text-base font-semibold dark:text-neutral-50">
-                Venetian LV
+                {device?.name}
               </h2>
-              <Badge>Republic Services</Badge>
+              <Badge>{organization?.name}</Badge>
             </div>
             <p className="text-xs text-neutral-500 dark:text-neutral-400">
               View and update your device settings here.

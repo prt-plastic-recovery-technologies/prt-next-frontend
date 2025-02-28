@@ -101,7 +101,7 @@ export default function Detail() {
         const response = await fetch(`${API_URL}/api/device/detail/${id}`, {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           credentials: "include",
@@ -152,6 +152,11 @@ export default function Detail() {
                   </DialogTrigger>
                   <DialogContent className="max-w-3xl w-full">
                     <SettingsPopover
+                      organization={
+                        detail?.organization ?? {
+                          name: null
+                        }
+                      }
                       device={
                         detail?.device ?? {
                           s1: false,
