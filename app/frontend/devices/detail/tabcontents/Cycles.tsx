@@ -35,7 +35,16 @@ import {
 import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
-export default function Cycles() {
+interface PressureData {
+  timestamp: string;
+  pressure: number;
+}
+interface CyclesProps {
+  pressureData: PressureData[];
+}
+
+
+export default function Cycles({pressureData}:CyclesProps) {
   const [selectedRows, setSelectedRows] = React.useState<string[]>([]);
   const data = Array(8).fill({
     startTime: "2025-02-10 09:00:00",
@@ -137,21 +146,21 @@ export default function Cycles() {
           <div className="flex flex-col gap-10">
             <div className="h-[250px] sm:h-[300px]">
               <ChartContainer config={chartConfig}>
-                <BarChart accessibilityLayer data={chartData}>
+                <BarChart accessibilityLayer data={pressureData}>
                   <CartesianGrid vertical={false} />
                   <XAxis
-                    dataKey="month"
+                    dataKey="timestamp"
                     tickLine={false}
                     tickMargin={10}
                     axisLine={false}
-                    tickFormatter={(value) => value.slice(0, 3)}
+                    tickFormatter={(value) => value.slice(0, 16)}
                   />
                   <ChartTooltip
                     cursor={false}
                     content={<ChartTooltipContent hideLabel />}
                   />
                   <Bar
-                    dataKey="desktop"
+                    dataKey="pressure"
                     fill="var(--color-desktop)"
                     radius={8}
                   />
