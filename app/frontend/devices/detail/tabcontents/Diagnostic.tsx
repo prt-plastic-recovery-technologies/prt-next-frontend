@@ -3,19 +3,70 @@ import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { LineChart } from "@/components/ui/line-chart"
+import { useState,useEffect } from "react";
 
-export default function Diagnostic() {
-    // Mock data for charts
-    const chartData = {
-        labels: ["18:00", "21:00", "00:00", "03:00", "06:00", "09:00"],
-        datasets: [
+export default function Diagnostic({ diagnosticTools }: { diagnosticTools: { key: string; value: any }[] }) {
+    console.log(diagnosticTools)
+    const [chartDataHeartbeat, setChartDataHeartbeat] = useState<any>(null);
+    const [chartDataOilTemperature, setChartDataOilTemperature] = useState<any>(null);
+    const [chartDataSystemTemperature, setChartDataSystemTemperature] = useState<any>(null);
+    
+    useEffect(() => {
+      const heartbeatStatus = diagnosticTools.find(tool => tool.key === "heartbeat_status")?.value;
+      const oilTemperature = diagnosticTools.find(tool => tool.key === "oil_temperature")?.value;
+      const systemTemperature = diagnosticTools.find(tool => tool.key === "system_temperature")?.value;
+    
+      // Formatting Heartbeat Status Data
+      if (heartbeatStatus) {
+        const formattedHeartbeatData = {
+          labels: heartbeatStatus.map((entry: { timestamp: string }) => entry.timestamp),
+          datasets: [
             {
-                data: [60,80,85,95,120],
-                borderColor: "rgb(34, 211, 238)",
-                tension: 0.4,
+              data: heartbeatStatus.map((entry: { value: number }) => entry.value),
+              borderColor: "rgb(34, 211, 238)", 
             },
-        ],
-    }
+          ],
+        };
+        setChartDataHeartbeat(formattedHeartbeatData);
+      }
+    
+      // Formatting Oil Temperature Data
+      if (oilTemperature) {
+        const formattedOilTemperatureData = {
+          labels: oilTemperature.map((entry: { timestamp: string }) => entry.timestamp),
+          datasets: [
+            {
+              data: oilTemperature.map((entry: { value: number }) => entry.value),
+              borderColor: "rgb(255, 99, 132)", 
+            },
+          ],
+        };
+        setChartDataOilTemperature(formattedOilTemperatureData);
+      }
+    
+      // Formatting System Temperature Data
+      if (systemTemperature) {
+        const formattedSystemTemperatureData = {
+          labels: systemTemperature.map((entry: { timestamp: string }) => entry.timestamp),
+          datasets: [
+            {
+              data: systemTemperature.map((entry: { value: number }) => entry.value),
+              borderColor: "rgb(75, 192, 192)", 
+            },
+          ],
+        };
+        setChartDataSystemTemperature(formattedSystemTemperatureData);
+      }
+    }, [diagnosticTools]);
+    
+      
+    const estopButton = diagnosticTools.find(tool => tool.key === "estop_button")?.value;
+    const autoStartActive = diagnosticTools.find(tool => tool.key === "auto_start_active")?.value;
+    const manualStartActive = diagnosticTools.find(tool => tool.key === "manual_start_active")?.value;
+    const pressureMonitor = diagnosticTools.find(tool => tool.key === "pressure_monitor")?.value;
+    const oilTempMonitor = diagnosticTools.find(tool => tool.key === "oil_temp_monitor")?.value;
+    const oilLevelMonitor = diagnosticTools.find(tool => tool.key === "oil_level_monitor")?.value;
+
 
     return (
         <TabsContent value="diagnostic">
@@ -41,17 +92,17 @@ export default function Diagnostic() {
 
                             <div className="flex items-center justify-between">
                                 <p className="text-sm font-medium text-foreground">E-Stop Button</p>
-                                <Badge variant="outline">OFF</Badge>
+                                <Badge variant="outline">{estopButton ? "ON" : "OFF"}</Badge>
                             </div>
 
                             <div className="flex items-center justify-between">
                                 <p className="text-sm font-medium text-foreground">Auto-Start Active</p>
-                                <Badge variant="outline">OFF</Badge>
+                                <Badge variant="outline">{autoStartActive? "ON":"OFF"}</Badge>
                             </div>
 
                             <div className="flex items-center justify-between">
                                 <p className="text-sm font-medium text-foreground">Manual Start Active</p>
-                                <Badge>ACTIVE</Badge>
+                                <Badge>{manualStartActive? "Active":"Inactive"}</Badge>
                             </div>
                         </div>
 
@@ -65,17 +116,17 @@ export default function Diagnostic() {
 
                             <div className="flex items-center justify-between">
                                 <p className="text-sm font-medium text-foreground">Pressure Monitor</p>
-                                <Badge>OK</Badge>
+                                <Badge>{pressureMonitor? "OK":"OFF"}</Badge>
                             </div>
 
                             <div className="flex items-center justify-between">
                                 <p className="text-sm font-medium text-foreground">Oil Temp. Monitor</p>
-                                <Badge>OK</Badge>
+                                <Badge>{oilTempMonitor? "OK":"OFF"}</Badge>
                             </div>
 
                             <div className="flex items-center justify-between">
                                 <p className="text-sm font-medium text-foreground">Oil Level Monitor</p>
-                                <Badge>OK</Badge>
+                                <Badge>{oilLevelMonitor? "OK":"OFF"}</Badge>
                             </div>
                         </div>
                     </div>
@@ -86,7 +137,7 @@ export default function Diagnostic() {
                                 System Heartbeats Health
                             </span>
                             <div className="h-[230px]">
-                                <LineChart data={chartData} />
+                                <LineChart data={chartDataHeartbeat} />
                                 <div className="mt-4 flex justify-center items-center gap-1.5">
                                     <div className="h-2 w-2 rounded bg-cyan-600" />
                                     <span className="text-xs">hbs 6139992</span>
@@ -100,7 +151,7 @@ export default function Diagnostic() {
                                 Oil Temperature
                             </span>
                             <div className="h-[230px]">
-                                <LineChart data={chartData} />
+                                <LineChart data={chartDataOilTemperature} />
                                 <div className="mt-4 flex justify-center items-center gap-1.5">
                                     <div className="h-2 w-2 rounded bg-cyan-600" />
                                     <span className="text-xs">oit 6139992</span>
@@ -113,7 +164,7 @@ export default function Diagnostic() {
                                 System Temperature
                             </span>
                             <div className="h-[230px]">
-                                <LineChart data={chartData} />
+                                <LineChart data={chartDataSystemTemperature} />
                                 <div className="mt-4 flex justify-center items-center gap-1.5">
                                     <div className="h-2 w-2 rounded bg-cyan-600" />
                                     <span className="text-xs">temp 6139992</span>
