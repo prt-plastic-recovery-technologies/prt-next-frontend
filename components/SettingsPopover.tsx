@@ -8,9 +8,11 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { CircleX, Save } from "lucide-react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 import PopoverContent from "@/components/PopoverContent";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface SystemStatusProps {
   organization?: {
@@ -45,9 +47,11 @@ interface SystemStatusProps {
 
 export default function SettingsPopover({ device, organization }: SystemStatusProps) {
   const [loading, setLoading] = useState(false);
+  const [showPopover, setshowPopover] = useState(false);
+  const [changes, setChanges] = useState([]);
 
   const [switches, setSwitches] = React.useState({
-    stopForward: device?.s1 === "1", 
+    stopForward: device?.s1 === "1",
     holdToRun: device?.s2 === "1",
     startForward: device?.s3 === "1",
     singlePhase: device?.s4 === "1",
@@ -73,7 +77,7 @@ export default function SettingsPopover({ device, organization }: SystemStatusPr
     advanceBackpack: [Number(device?.zs9) || 1800, 1500, 1800],
     maximumBackpack: [Number(device?.zs10) || 2000, 1900, 2200],
   });
-  
+
 
   const onSaveChanges = async () => {
     if (!device?.id) return;
@@ -104,7 +108,12 @@ export default function SettingsPopover({ device, organization }: SystemStatusPr
       );
 
       if (response.ok) {
+        const data = await response.json();
+        console.log(data)
         console.log("Device settings updated successfully!");
+
+        setshowPopover(true);
+        setChanges(data.changes);
       } else {
         console.error("Failed to update device settings");
       }
@@ -134,7 +143,7 @@ export default function SettingsPopover({ device, organization }: SystemStatusPr
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={() => {}}>
+            <Button variant="outline" onClick={() => { }}>
               <CircleX className="mr-2 h-4 w-4" />
               Discard
             </Button>
@@ -146,9 +155,14 @@ export default function SettingsPopover({ device, organization }: SystemStatusPr
                   {loading ? "Saving..." : "Save Changes"}
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-3xl w-full">
-                <PopoverContent />
-              </DialogContent>
+              {showPopover && (
+                <DialogContent className="max-w-3xl w-full">
+                  <DialogTitle>
+                    <PopoverContent changes={changes} switches={switches} sliders={sliders} />
+                  </DialogTitle>
+                </DialogContent>
+              )}
+
             </Dialog>
           </div>
         </div>
