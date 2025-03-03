@@ -82,6 +82,7 @@ export default function Detail() {
   const [pressureData, setPressureData] = useState<{ timestamp: string; pressure: number }[]>([]);
   const [pressureData_avg, setPressureData_avg] = useState<{ timestamp: string; pressure: number }[]>([]);
   const [diagnosticTools, setDiagnosticTools] = useState([]);
+  const [cyclesData, setCyclesData] = useState<{ total_cycle: string; total_runtime: string } | null>(null);
 
 
 
@@ -115,6 +116,7 @@ export default function Detail() {
         setPressureData(data.pressure_data || []);
         setPressureData_avg(data.pressure_data_24h_avg || []);
         setDiagnosticTools(data.Diagnostic_Tools || []);
+        setCyclesData(data.Cycles_Data || { total_cycle: "0", total_runtime: "0" });
 
         setDetail(data);
         
@@ -363,7 +365,7 @@ export default function Detail() {
         />
         {/* <Cycles /> */}
         <Cycles pressureData_avg ={pressureData_avg} pressureData={pressureData} />
-        <Maintenance />
+        <Maintenance cyclesData={cyclesData}/>
         <Alerts email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} />
         <Connectivity email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} connectivity_details={connectivityDetails} />
         <Diagnostic  diagnosticTools={diagnosticTools} />

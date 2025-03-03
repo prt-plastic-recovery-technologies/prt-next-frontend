@@ -23,7 +23,12 @@ import { Badge } from "@/components/ui/badge";
 import { Shield } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
-export default function Maintenance() {
+interface MaintenanceProps {
+  cyclesData: { total_cycle: string; total_runtime: string } | null;
+}
+
+
+export default function Maintenance({ cyclesData }: MaintenanceProps) {
   return (
     <TabsContent value="maintenance">
       <Card className="p-0">
@@ -155,7 +160,7 @@ export default function Maintenance() {
                     </p>
                     <div className="flex items-center gap-2">
                       <p className="text-sm font-bold text-foreground">
-                        268856
+                      {cyclesData?.total_cycle || "N/A"}
                       </p>
                     </div>
                   </div>
@@ -166,7 +171,7 @@ export default function Maintenance() {
                       Total Runtime
                     </p>
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-bold text-foreground">56895</p>
+                      <p className="text-sm font-bold text-foreground"> {cyclesData?.total_runtime || "N/A"}</p>
                     </div>
                   </div>
                 </div>

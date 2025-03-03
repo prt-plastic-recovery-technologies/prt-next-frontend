@@ -6,7 +6,7 @@ import { LineChart } from "@/components/ui/line-chart"
 import { useState,useEffect } from "react";
 
 export default function Diagnostic({ diagnosticTools }: { diagnosticTools: { key: string; value: any }[] }) {
-    console.log(diagnosticTools)
+
     const [chartDataHeartbeat, setChartDataHeartbeat] = useState<any>(null);
     const [chartDataOilTemperature, setChartDataOilTemperature] = useState<any>(null);
     const [chartDataSystemTemperature, setChartDataSystemTemperature] = useState<any>(null);
