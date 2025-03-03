@@ -1,5 +1,4 @@
 import { TabsContent } from "@/components/ui/tabs";
-import { useState } from "react"
 import { Cable, ArrowUpDown, MoreHorizontal, ChevronLeft, ChevronRight } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -24,7 +23,7 @@ interface AlertLog {
 }
 interface ConnectivityDetails {
   name:string,
-  value:any
+  value:string
 }
 interface AlertsProps {
   email_logs: AlertLog[];

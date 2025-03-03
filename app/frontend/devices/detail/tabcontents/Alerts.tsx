@@ -1,6 +1,5 @@
 
 import { TabsContent } from "@/components/ui/tabs";
-import { useState } from "react"
 import { Plus, ArrowUpDown, MoreHorizontal, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"

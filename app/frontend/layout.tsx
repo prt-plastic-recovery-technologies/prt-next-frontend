@@ -24,7 +24,6 @@ import {
   Users,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { ModeToggle } from "@/components/theme-toggler";
 
 // Define the DefaultLogo component outside of the Layout component
 const DefaultLogo = () => (
@@ -49,7 +48,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     checkAuth();
-  }, []);
+  });
 
   // Define data outside of the conditional rendering
   const data = {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -8,7 +8,6 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { CircleX, Save } from "lucide-react";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 import PopoverContent from "@/components/PopoverContent";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
@@ -16,9 +15,10 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface SystemStatusProps {
   organization?: {
-    name: string
-  }
+    name: string;
+  };
   device?: {
+    name: string;
     id: bigint;
     s1: string;
     s2: string;
@@ -47,8 +47,8 @@ interface SystemStatusProps {
 
 export default function SettingsPopover({ device, organization }: SystemStatusProps) {
   const [loading, setLoading] = useState(false);
-  const [showPopover, setshowPopover] = useState(false);
-  const [changes, setChanges] = useState([]);
+  const [showPopover, setShowPopover] = useState(false);
+  const [changes, setChanges] = useState<{ field: string; old_value: string | number; new_value: string | number }[]>([]);
 
   const [switches, setSwitches] = React.useState({
     stopForward: device?.s1 === "1",
@@ -77,7 +77,6 @@ export default function SettingsPopover({ device, organization }: SystemStatusPr
     advanceBackpack: [Number(device?.zs9) || 1800, 1500, 1800],
     maximumBackpack: [Number(device?.zs10) || 2000, 1900, 2200],
   });
-
 
   const onSaveChanges = async () => {
     if (!device?.id) return;
@@ -109,10 +108,9 @@ export default function SettingsPopover({ device, organization }: SystemStatusPr
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data)
-        console.log("Device settings updated successfully!");
+        console.log("Device settings updated successfully!", data);
 
-        setshowPopover(true);
+        setShowPopover(true);
         setChanges(data.changes);
       } else {
         console.error("Failed to update device settings");
@@ -133,9 +131,9 @@ export default function SettingsPopover({ device, organization }: SystemStatusPr
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <h2 className="text-neutral-950 text-base font-semibold dark:text-neutral-50">
-                {device?.name}
+                {device?.name || "Device Name"}
               </h2>
-              <Badge>{organization?.name}</Badge>
+              <Badge>{organization?.name || "Organization"}</Badge>
             </div>
             <p className="text-xs text-neutral-500 dark:text-neutral-400">
               View and update your device settings here.
@@ -162,7 +160,6 @@ export default function SettingsPopover({ device, organization }: SystemStatusPr
                   </DialogTitle>
                 </DialogContent>
               )}
-
             </Dialog>
           </div>
         </div>
@@ -207,31 +204,29 @@ export default function SettingsPopover({ device, organization }: SystemStatusPr
 
             {/* Scrollable Container */}
             <div className="max-h-[300px] overflow-y-auto pr-2">
-              {Object.entries(sliders).map(
-                ([key, [defaultValue, min, max]]) => (
-                  <div key={key} className="space-y-2">
-                    <label className="text-sm font-medium">
-                      {key.replace(/([A-Z])/g, " $1").trim()}
-                    </label>
-                    <Slider
-                      value={[defaultValue]}
-                      min={min}
-                      max={max}
-                      step={1}
-                      onValueChange={(newValue) =>
-                        setSliders((prev) => ({
-                          ...prev,
-                          [key]: [newValue[0], min, max],
-                        }))
-                      }
-                    />
-                    <div className="flex justify-between text-sm">
-                      <span>{defaultValue}</span>
-                      <span>{max}</span>
-                    </div>
+              {Object.entries(sliders).map(([key, [defaultValue, min, max]]) => (
+                <div key={key} className="space-y-2">
+                  <label className="text-sm font-medium">
+                    {key.replace(/([A-Z])/g, " $1").trim()}
+                  </label>
+                  <Slider
+                    value={[defaultValue]}
+                    min={min}
+                    max={max}
+                    step={1}
+                    onValueChange={(newValue) =>
+                      setSliders((prev) => ({
+                        ...prev,
+                        [key]: [newValue[0], min, max],
+                      }))
+                    }
+                  />
+                  <div className="flex justify-between text-sm">
+                    <span>{defaultValue}</span>
+                    <span>{max}</span>
                   </div>
-                )
-              )}
+                </div>
+              ))}
             </div>
           </div>
         </Card>

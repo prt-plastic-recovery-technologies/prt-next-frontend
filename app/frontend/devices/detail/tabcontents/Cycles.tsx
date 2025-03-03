@@ -2,10 +2,7 @@ import { TabsContent } from "@/components/ui/tabs";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import {
   ChartConfig,
@@ -32,7 +29,6 @@ import {
   ChevronRight,
   MoreHorizontal,
 } from "lucide-react";
-import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
 interface PressureData {
@@ -53,14 +49,6 @@ export default function Cycles({pressureData,pressureData_avg}:CyclesProps) {
     maxForwardPressure: "943",
     maxBackwardPressure: "943",
   });
-  const chartData = [
-    { month: "January", desktop: 186 },
-    { month: "February", desktop: 305 },
-    { month: "March", desktop: 237 },
-    { month: "April", desktop: 73 },
-    { month: "May", desktop: 209 },
-    { month: "June", desktop: 214 },
-  ];
   const toggleSelectAll = () => {
     if (selectedRows.length === data.length) {
       setSelectedRows([]);

@@ -70,7 +70,7 @@ export default function DeviceList() {
   }, []);
   useEffect(() => {
     fetchDevices();
-  }, []);
+  });
 
   const fetchDevices = async (organizationId: string | null = null, unitStatus: string | null = null) => {
     try {

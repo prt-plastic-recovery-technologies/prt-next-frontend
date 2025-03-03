@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { PanelLeft, CircleUser } from "lucide-react"
+import { PanelLeft } from "lucide-react"
 
 export default function Header() {
   return (

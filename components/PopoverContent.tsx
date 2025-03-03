@@ -40,7 +40,7 @@ const sliderLabels: { [key: string]: { label: string; min: number; max: number }
 };
 
 
-export default function PopoverContent({ changes, switches, sliders }: PopoverContentProps) {
+export default function PopoverContent({ changes }: PopoverContentProps) {
   const changedSwitches = changes.filter(change => switchLabels[change.field]);
   const changedSliders = changes.filter(change => sliderLabels[change.field]);
 

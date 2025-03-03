@@ -36,17 +36,36 @@ export default function Detail() {
   }
 
   interface Device {
+    id: bigint;
     name: string;
     des: string;
     address: string;
     sn: string;
     unit_num: string;
+    s1: string;
+    s2: string;
+    s3: string;
+    s4: string;
+    s5: string;
+    s6: string;
+    s7: string;
+    s8: string;
+    s9: string;
+    s10: string;
+    s11: string;
+    s12: string;
+    zs1: string;
+    zs2: string;
+    zs3: string;
+    zs4: string;
+    zs5: string;
+    zs6: string;
+    zs7: string;
+    zs8: string;
+    zs9: string;
+    zs10: string;
   }
-
-  interface Device_Alerts {
-    id: string;
-    sn: string;
-  }
+  
 
   interface Detail {
     organization?: Organization;
@@ -69,10 +88,10 @@ export default function Detail() {
   }
   interface Connectivity {
     name: string;
-    value: any;
+    value: string;
   }
-  
-  
+
+
 
   const params = useParams();
   const id = params.id as string;
@@ -110,7 +129,7 @@ export default function Detail() {
         });
         const data = await response.json();
         console.log(data);
-      
+
         setEmailLogs({ email_logs: data.email_logs || [] });
         setConnectivityDetails(data.connectivity_details || []);
         setPressureData(data.pressure_data || []);
@@ -119,7 +138,7 @@ export default function Detail() {
         setCyclesData(data.Cycles_Data || { total_cycle: "0", total_runtime: "0" });
 
         setDetail(data);
-        
+
       } catch (err: unknown) {
         if (err instanceof Error) {
           console.log(err.message || "An unexpected error occurred.");
@@ -157,38 +176,35 @@ export default function Detail() {
                   </DialogTrigger>
                   <DialogContent className="max-w-3xl w-full">
                     <SettingsPopover
-                      organization={
-                        detail?.organization ?? {
-                          name: null
-                        }
-                      }
-                      device={
-                        detail?.device ?? {
-                          s1: false,
-                          s2: false,
-                          s3: false,
-                          s4: false,
-                          s5: false,
-                          s6: false,
-                          s7: false,
-                          s8: false,
-                          s9: false,
-                          s10: false,
-                          s11: false,
-                          s12: false,
-                          zs1: null,
-                          zs2: null,
-                          zs3: null,
-                          zs4: null,
-                          zs5: null,
-                          zs6: null,
-                          zs7: null,
-                          zs8: null,
-                          zs9: null,
-                          zs10: null,
-                        }
-                      }
+                      organization={detail?.organization ?? { name: "" }}
+                      device={detail?.device ?? {
+                        name: '',
+                        id: BigInt(0),
+                        s1: "false",
+                        s2: "false",
+                        s3: "false",
+                        s4: "false",
+                        s5: "false",
+                        s6: "false",
+                        s7: "false",
+                        s8: "false",
+                        s9: "false",
+                        s10: "false",
+                        s11: "false",
+                        s12: "false",
+                        zs1: "null",
+                        zs2: "null",
+                        zs3: "null",
+                        zs4: "null",
+                        zs5: "null",
+                        zs6: "null",
+                        zs7: "null",
+                        zs8: "null",
+                        zs9: "null",
+                        zs10: "null",
+                      }}
                     />
+
                   </DialogContent>
                 </Dialog>
                 <Button>
@@ -367,13 +383,13 @@ export default function Detail() {
                 system_health: "Unknown",
               }
             }
-        />
-        {/* <Cycles /> */}
-        <Cycles pressureData_avg ={pressureData_avg} pressureData={pressureData} />
-        <Maintenance cyclesData={cyclesData}/>
-        <Alerts email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} />
-        <Connectivity email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} connectivity_details={connectivityDetails} />
-        <Diagnostic  diagnosticTools={diagnosticTools} />
+          />
+          {/* <Cycles /> */}
+          <Cycles pressureData_avg={pressureData_avg} pressureData={pressureData} />
+          <Maintenance cyclesData={cyclesData} />
+          <Alerts email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} />
+          <Connectivity email_logs={emailLogs.email_logs} id={id} sn={detail?.device?.sn} connectivity_details={connectivityDetails} />
+          <Diagnostic diagnosticTools={diagnosticTools} />
         </div>
       </Tabs>
     </div>
